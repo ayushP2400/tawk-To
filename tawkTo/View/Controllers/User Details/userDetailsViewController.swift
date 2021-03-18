@@ -89,10 +89,19 @@ class userDetailsViewController: UIViewController {
             
             self.userDetailsTableView.reloadData()
             DBHelper.sharedInstance.updateUserSeenStatus(userName: self.userName) { (val, Message) in
-                
+                self.userDetailsVal!.isVisited = true
+                if self.userDetailsVal!.notes != ""{
+                    let model = notesElement.init(userDetails: self.userDetailsVal!)
+                    delegate?.didUpdateSeenStatus(with: model, at: self.indexLastData)
+                }else if indexLastData+1 % 4 == 0{
+                    let model = invertedElement.init(userDetails: self.userDetailsVal!)
+                    delegate?.didUpdateSeenStatus(with: model, at: self.indexLastData)
+                }else{
+                    let model = regularElement.init(userDetails: self.userDetailsVal!)
+                    delegate?.didUpdateSeenStatus(with: model, at: self.indexLastData)
+                }
             }
         }
-        
     }
     
     func getUserDetails(){
@@ -153,6 +162,7 @@ class userDetailsViewController: UIViewController {
     }
     
     @IBAction func back(_ sender: UIBarButtonItem) {
+        
         self.navigationController?.popViewController(animated: true)
     }
     
@@ -229,4 +239,5 @@ extension userDetailsViewController:UITableViewDelegate,UITableViewDataSource{
 }
 protocol notesUpdateDelegate {
     func didUpdateNotes(with newData: CustomElementModel, at index: Int)
+    func didUpdateSeenStatus(with newData: CustomElementModel, at index: Int)
 }

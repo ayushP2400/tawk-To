@@ -155,11 +155,15 @@ extension UserListViewController: UITableViewDelegate,UITableViewDataSource{
 }
 
 extension UserListViewController:notesUpdateDelegate{
-    func didUpdateNotes(with newData: CustomElementModel, at index: Int) {
+    func didUpdateSeenStatus(with newData: CustomElementModel, at index: Int) {
         self.userList[index] = newData
         self.userListTableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .fade)
     }
     
+    func didUpdateNotes(with newData: CustomElementModel, at index: Int) {
+        self.userList[index] = newData
+        self.userListTableView.reloadRows(at: [IndexPath(row: index, section: 0)], with: .fade)
+    }
     
 }
 extension UserListViewController: UITextFieldDelegate{
